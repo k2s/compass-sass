@@ -1,14 +1,3 @@
-//
-// This script is executed by Grails after plugin was installed to project.
-// This script is a Gant script so you can use all special variables provided
-// by Gant (such as 'baseDir' which points on project base dir). You can
-// use 'ant' to access a global instance of AntBuilder
-//
-// For example you can create directory under project tree:
-//
-//    ant.mkdir(dir:"${basedir}/grails-app/jobs")
-//
-
 def getOutputFromCommand(String command) {
     def process = command.execute()
     def out = new StringBuffer()
@@ -30,14 +19,14 @@ def isJRubyInstalled() {
     return true
 }
 
-def isCompassGemInstalled() {
+def isGemInstalled(String gem) {
     String gems = getOutputFromCommand("jruby -S gem list")
-    println( "Installed gems:" )
+    println("Installed gems:")
     println gems
     gems.contains("compass")
 }
 
-def installCompass() {
+def installGem(String gem) {
     Process p = "jruby -S gem install compass".execute()
     p.consumeProcessOutput(System.out, System.err)
     p.waitFor()
@@ -51,8 +40,11 @@ if (!isJRubyInstalled()) {
     return
 }
 
-println "Testing to see if Compass gem is installed..."
-if (!isCompassGemInstalled()) {
-    println "Compass gem not found; attempting to install automatically..."
-    installCompass()
+def listOfGemsToInstall = ['compass', 'rb-fsevent']
+listOfGemsToInstall.each { gem ->
+    println "Testing to see if ${gem} gem is installed..."
+    if (!isGemInstalled(gem)) {
+        println "${gem} gem not found; attempting to install automatically..."
+        installGem(gem)
+    }
 }
