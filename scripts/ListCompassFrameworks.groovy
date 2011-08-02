@@ -1,5 +1,5 @@
 includeTargets << grailsScript("Init")
-includeTargets << new File("${grassPluginDir}/scripts/_CompassFrameworks.groovy")
+includeTargets << new File("${compassScssIntegrationPluginDir}/scripts/_CompassFrameworks.groovy")
 
 target(listCompassFrameworks: 'Show the list of available compass frameworks') {
     println "\nAvailable Compass frameworks:"
