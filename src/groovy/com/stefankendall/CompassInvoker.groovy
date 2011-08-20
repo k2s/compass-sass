@@ -40,7 +40,8 @@ class CompassInvoker {
                 relative_assets ? "--relative-assets" : "",
                 '--output-style', "${output_style}"]
 
-        runCompassCommand(sassCompileCommandLineArgs)
+        def p = runCompassCommand(sassCompileCommandLineArgs)
+        p?.waitFor()
     }
 
     public void watch() {
@@ -49,37 +50,28 @@ class CompassInvoker {
                 '--output-style', config.grass.output_style])
     }
 
-    protected def runCompassCommand(def compassArgs) {
+    protected Process runCompassCommand(def compassArgs, PrintStream output = System.out) {
         String[] command = ['jruby', '-S', 'compass', compassArgs].flatten()
         println "Executing: ${command.join(' ')}"
 
-        Process p = command.execute()
-        p.consumeProcessOutput(System.out, System.err)
-        p.waitFor()
+        Process p = null
+        try {
+            p = command.execute()
+            p.consumeProcessOutput(output, System.err)
+        }
+        catch (IOException e) {
+            System.err.println("JRuby could not be started. Make sure 'jruby' exists on the PATH and try again.")
+            System.err.println("No SCSS/SASS compilation will be performed.")
+        }
+
+        return p
     }
 
     protected def runCompassCommandInThread(def compassArgs) {
-        String[] command = ['jruby', '-S', 'compass', compassArgs].flatten()
-        println "Executing: ${command.join(' ')}"
-
         Thread.start {
-            Process process
-            try {
-                process = command.execute()
-            }
-            catch (IOException e) {
-                System.err.println("JRuby could not be started. Make sure 'jruby' exists on the PATH and try again.")
-                System.err.println("No SCSS/SASS compilation will be performed.")
-                return
-            }
-
-            Runtime.runtime.addShutdownHook {
-                println "Attempting to kill compass poller. You may need to kill javaw.exe."
-                process.destroy()
-            }
-
-            process.consumeProcessOutput(System.out, System.err)
-            process.waitFor()
+            def process = runCompassCommand(compassArgs)
+            addShutdownHookToKillCompass()
+            process?.waitFor()
         }
     }
 
@@ -87,5 +79,16 @@ class CompassInvoker {
         if (!parameter) {
             callback(message)
         }
+    }
+
+    protected addShutdownHookToKillCompass = {->
+        Runtime.runtime.addShutdownHook {
+            killCompass()
+        }
+    }
+
+    protected def killCompass() {
+        println "Attempting to kill compass --watch."
+        new JavaProcessKiller().killAll('org/jruby/Main -S compass')
     }
 }

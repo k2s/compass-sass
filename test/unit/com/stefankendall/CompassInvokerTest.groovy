@@ -1,14 +1,11 @@
 package com.stefankendall
 
-import grails.test.GrailsUnitTestCase
-
-class CompassInvokerTest extends GrailsUnitTestCase {
+class CompassInvokerTest extends GroovyTestCase {
     CompassInvoker compass
 
     public void setUp() {
         compass = new CompassInvoker(new File("grails-app/conf/GrassConfig.groovy"))
     }
-
 
     public void test_compile() {
         def config = [
@@ -38,9 +35,21 @@ class CompassInvokerTest extends GrailsUnitTestCase {
 
     public void test_compass_gem_is_installed() {
         def output = new ByteArrayOutputStream()
-        System.out = new PrintStream(output)
-        compass.runCompassCommand(['--version'] as String[])
 
-        assertTrue("Compass gem does not seem to be runnable", output.toString().contains("0.11"))
+        Process p = compass.runCompassCommand(['--version'] as String[], new PrintStream(output))
+        p.waitFor()
+
+        String processOutput = output.toString()
+        assertTrue("Compass gem does not seem to be runnable: $processOutput", processOutput.contains("0.11"))
+    }
+
+    public void test_killing_compass_doesnt_leak_processes() {
+        def javaProcessKiller = new JavaProcessKiller()
+        int javaProcessCount = javaProcessKiller.getRunningJavaProcesses().size()
+        compass.watch()
+        compass.killCompass()
+        int newJavaProcessCount = javaProcessKiller.getRunningJavaProcesses().size()
+
+        assertEquals("Watch command is leaking processes", javaProcessCount, newJavaProcessCount)
     }
 }
