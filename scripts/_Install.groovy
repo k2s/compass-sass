@@ -27,7 +27,7 @@ def isGemInstalled(String gem) {
 }
 
 def installGem(String gem) {
-    Process p = "jruby -S gem install compass".execute()
+    Process p = "jruby -S gem install $gem".execute()
     p.consumeProcessOutput(System.out, System.err)
     p.waitFor()
 }

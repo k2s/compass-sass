@@ -5,10 +5,12 @@ class CompassInvoker {
 
     public CompassInvoker(File grassConfigLocation) {
         config = new ConfigSlurper().parse(grassConfigLocation.toURL())
+        addShutdownHookToKillCompass()
     }
 
     public CompassInvoker(Map config) {
         this.config = config
+        addShutdownHookToKillCompass()
     }
 
     public void compile(callback) {
@@ -70,7 +72,6 @@ class CompassInvoker {
     protected def runCompassCommandInThread(def compassArgs) {
         Thread.start {
             def process = runCompassCommand(compassArgs)
-            addShutdownHookToKillCompass()
             process?.waitFor()
         }
     }
