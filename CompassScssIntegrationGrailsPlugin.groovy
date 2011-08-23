@@ -16,10 +16,10 @@ sass/scss files are watched for changes and compiled on the fly, and compilation
 
     def documentation = "https://github.com/stefankendall/compass-scss-integration"
 
-    def license = "MIT"
+    def license = "APACHE"
     def developers = [
     ]
-    def scm = "http://svn.grails-plugins.codehaus.org/browse/grails-plugins/"
+    def scm = [url: "http://svn.grails-plugins.codehaus.org/browse/grails-plugins/"]
 
     def doWithSpring = {
     }
