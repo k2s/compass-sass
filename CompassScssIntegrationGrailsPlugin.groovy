@@ -7,14 +7,12 @@ class CompassScssIntegrationGrailsPlugin {
 
     def author = "Stefan Kendall"
     def authorEmail = "stefankendall@gmail.com"
-    def title = "Compass SCSS/SASS compilation plugin, based on the original grass compass plugin."
+    def title = "Compass CSS Framework - SASS/SCSS Integration"
     def description = '''
-CompassScssIntegration is a stylesheet authoring tool that uses compass (http://compass-style.org/) to bring scss and sass support to grails.
-JRuby must be installed locally to work correctly, as most functionality thin-wraps the compass gem. During run-app,
-sass/scss files are watched for changes and compiled on the fly, and compilation can be invoked manually outside of run-app.
+Compass, SASS and SCSS support for Grails
 '''
 
-    def documentation = "https://github.com/stefankendall/compass-scss-integration"
+    def documentation = "http://grails.org/plugin/compass-scss-integration"
 
     def license = "APACHE"
     def developers = [
