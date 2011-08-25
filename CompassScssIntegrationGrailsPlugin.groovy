@@ -17,7 +17,7 @@ Compass, SASS and SCSS support for Grails
     def license = "APACHE"
     def developers = [
     ]
-    def scm = [url: "http://svn.grails-plugins.codehaus.org/browse/grails-plugins/"]
+    def scm = [url: "https://github.com/stefankendall/compass-scss-integration"]
 
     def doWithSpring = {
     }
