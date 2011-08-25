@@ -2,15 +2,16 @@ package com.stefankendall
 
 class CompassInvoker {
     def config
+    def javaProcessKiller
 
-    public CompassInvoker(File grassConfigLocation) {
+    public CompassInvoker(File grassConfigLocation, def javaProcessKiller) {
         config = new ConfigSlurper().parse(grassConfigLocation.toURL())
-        addShutdownHookToKillCompass()
+        this.javaProcessKiller = javaProcessKiller
     }
 
-    public CompassInvoker(Map config) {
+    public CompassInvoker(Map config, def javaProcessKiller ) {
         this.config = config
-        addShutdownHookToKillCompass()
+        this.javaProcessKiller = javaProcessKiller
     }
 
     public void compile(callback) {
@@ -69,7 +70,12 @@ class CompassInvoker {
         return p
     }
 
+    private static boolean shutdownHookAdded = false
     protected def runCompassCommandInThread(def compassArgs) {
+        if (!shutdownHookAdded) {
+            addShutdownHookToKillCompass()
+        }
+
         Thread.start {
             def process = runCompassCommand(compassArgs)
             process?.waitFor()
@@ -89,7 +95,7 @@ class CompassInvoker {
     }
 
     protected def killCompass() {
-        println "Attempting to kill compass --watch."
-        new JavaProcessKiller().killAll('org/jruby/Main -S compass')
+        println "Attempting to kill compass threaded processes"
+        javaProcessKiller.killAll('org/jruby/Main -S compass')
     }
 }

@@ -4,7 +4,7 @@ class CompassInvokerTest extends GroovyTestCase {
     CompassInvoker compass
 
     public void setUp() {
-        compass = new CompassInvoker(new File("grails-app/conf/GrassConfig.groovy"))
+        compass = new CompassInvoker(new File("grails-app/conf/GrassConfig.groovy"), new JavaProcessKiller())
     }
 
     public void test_compile() {
@@ -17,7 +17,7 @@ class CompassInvokerTest extends GroovyTestCase {
                         relative_assets: true
                 ]
         ]
-        compass = new CompassInvoker(config)
+        compass = new CompassInvoker(config, new JavaProcessKiller())
 
         def blueprintCssFiles = [
                 new File('src/web-app/css/blueprint/ie.css'),
