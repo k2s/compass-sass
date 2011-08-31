@@ -21,9 +21,7 @@ def isJRubyInstalled() {
 
 def isGemInstalled(String gem) {
     String gems = getOutputFromCommand("jruby -S gem list")
-    println("Installed gems:")
-    println gems
-    gems.contains("compass")
+    return gems.contains("compass")
 }
 
 def installGem(String gem) {
@@ -31,6 +29,15 @@ def installGem(String gem) {
     p.consumeProcessOutput(System.out, System.err)
     p.waitFor()
 }
+
+def createGrassConfigFile() {
+    println "Copying GrassConfig.groovy if not already present"
+    Ant.copy(
+            todir: "${basedir}/grails-app/conf", overwrite: false,
+            file: "${compassScssIntegrationPluginDir}/grails-app/conf/GrassConfig.groovy")
+}
+
+createGrassConfigFile()
 
 println "Testing to see if JRuby is installed..."
 if (!isJRubyInstalled()) {
