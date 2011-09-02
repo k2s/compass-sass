@@ -31,10 +31,10 @@ def installGem(String gem) {
 }
 
 def createGrassConfigFile() {
-    println "Copying GrassConfig.groovy if not already present"
+    println "Creating GrassConfig.groovy if not already present"
     Ant.copy(
-            todir: "${basedir}/grails-app/conf", overwrite: false,
-            file: "${compassScssIntegrationPluginDir}/grails-app/conf/GrassConfig.groovy")
+            tofile: "${basedir}/grails-app/conf/GrassConfig.groovy", overwrite: false,
+            file: "${compassScssIntegrationPluginDir}/grails-app/conf/DefaultGrassConfig.groovy")
 }
 
 createGrassConfigFile()

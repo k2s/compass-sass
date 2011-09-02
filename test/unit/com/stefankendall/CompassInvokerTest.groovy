@@ -4,7 +4,7 @@ class CompassInvokerTest extends GroovyTestCase {
     CompassInvoker compass
 
     public void setUp() {
-        compass = new CompassInvoker(new File("grails-app/conf/GrassConfig.groovy"), new JavaProcessKiller())
+        compass = new CompassInvoker(new File("grails-app/conf/DefaultGrassConfig.groovy"), new JavaProcessKiller())
     }
 
     public void test_compile() {
