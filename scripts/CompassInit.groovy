@@ -1,13 +1,23 @@
 includeTargets << grailsScript("Init")
 includeTargets << new File("${compassScssIntegrationPluginDir}/scripts/_CompassFrameworks.groovy")
 
+void displayCompassFrameworks() {
+    println "\nAvailable Compass frameworks:"
+    availableCompassFrameworks.each { name, frameworkInfo ->
+        println "    $name : ${frameworkInfo.description}"
+    }
+}
+
 target(initCompass: 'Initialize compass framework') {
+    displayCompassFrameworks()
+
     if (args) {
         frameworkName = args.trim()
     } else {
         Ant.input(addProperty: "compass.init.framework.name", message: "Enter the framework name:")
         frameworkName = Ant.antProject.properties."compass.init.framework.name"
     }
+
     initCompassFramework()
 }
 
