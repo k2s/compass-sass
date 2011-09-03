@@ -15,8 +15,11 @@ target(initCompassFramework: 'Initialize compass framework') {
     def framework = frameworkName ? availableCompassFrameworks."$frameworkName" : null
 
     if (framework) {
-        println "\nCopying sass stylesheets to ./src/stylesheets"
-        Ant.copy(todir: "${basedir}/src/stylesheets", overwrite: true) {
+        def config = new ConfigSlurper().parse(new File(basedir, "grails-app/conf/GrassConfig.groovy").toURL())
+        def sassOutputDir = config.grass.sass_dir
+
+        println "\nCopying sass stylesheets to ${sassOutputDir}"
+        Ant.copy(todir: "${basedir}/${sassOutputDir}", overwrite: true) {
             fileset(dir: "${compassScssIntegrationPluginDir}/src/stylesheets/${framework.dir}")
         }
 
