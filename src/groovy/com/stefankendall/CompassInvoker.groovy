@@ -54,7 +54,15 @@ class CompassInvoker {
     }
 
     public void installBlueprint() {
-        runCompassCommand(['create', '--using', 'blueprint', '--sass-dir', config.grass.sass_dir, '--css-dir', config.grass.css_dir, '--javascripts-dir', 'js', '--images-dir', config.grass.images_dir]).waitFor()
+        def installBlueprintCommand = ['create', '--using', 'blueprint']
+
+        if (config.grass.framework_output_type == 'sass') {
+            installBlueprintCommand << ['--syntax', 'sass']
+        }
+
+        installBlueprintCommand << ['--sass-dir', config.grass.sass_dir, '--css-dir', config.grass.css_dir, '--javascripts-dir', 'js', '--images-dir', config.grass.images_dir]
+
+        runCompassCommand(installBlueprintCommand.flatten()).waitFor()
     }
 
     protected Process runCompassCommand(def compassArgs, PrintStream output = System.out) {
