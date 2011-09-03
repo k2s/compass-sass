@@ -1,5 +1,5 @@
 class CompassScssIntegrationGrailsPlugin {
-    def version = "0.2.8"
+    def version = "0.3.0"
     def grailsVersion = "1.3.7 > *"
     def dependsOn = [:]
     def pluginExcludes = [
