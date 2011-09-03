@@ -56,7 +56,7 @@ class CompassInvoker {
     public void installBlueprint() {
         def installBlueprintCommand = ['create', '--using', 'blueprint']
 
-        if (config.grass.framework_output_type == 'sass') {
+        if (config.grass?.framework_output_type == 'sass') {
             installBlueprintCommand << ['--syntax', 'sass']
         }
 

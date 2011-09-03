@@ -3,6 +3,9 @@ package com.stefankendall
 class CompassInvokerTest extends GroovyTestCase {
     CompassInvoker compass
 
+    def blueprintScssFiles = [new File("src/stylesheets/ie.scss"), new File("src/stylesheets/print.scss"), new File("src/stylesheets/screen.scss"), new File("src/stylesheets/partials/_base.scss")]
+    def blueprintSassFiles = [new File("src/stylesheets/ie.sass"), new File("src/stylesheets/print.sass"), new File("src/stylesheets/screen.sass"), new File("src/stylesheets/partials/_base.sass")]
+
     public void setUp() {
         compass = new CompassInvoker(new File("grails-app/conf/DefaultGrassConfig.groovy"), new JavaProcessKiller())
     }
@@ -55,12 +58,11 @@ class CompassInvokerTest extends GroovyTestCase {
     }
 
     public void test_install_blueprint() {
-        def blueprintFiles = [new File("src/stylesheets/ie.scss"), new File("src/stylesheets/print.scss"), new File("src/stylesheets/screen.scss"), new File("src/stylesheets/partials/_base.scss")]
-        blueprintFiles*.delete()
+        blueprintScssFiles*.delete()
 
         compass.installBlueprint()
 
-        blueprintFiles.each { File file -> assertTrue("${file.name} was not created", file.exists()) }
+        blueprintScssFiles.each { File file -> assertTrue("${file.name} was not created", file.exists()) }
     }
 
     public void test_install_blueprint_sass_output() {
@@ -76,13 +78,29 @@ class CompassInvokerTest extends GroovyTestCase {
         ]
 
         compass = new CompassInvoker(config, new JavaProcessKiller())
+
+
+        blueprintSassFiles*.delete()
         compass.installBlueprint()
 
-        def blueprintFiles = [new File("src/stylesheets/ie.sass"), new File("src/stylesheets/print.sass"), new File("src/stylesheets/screen.sass"), new File("src/stylesheets/partials/_base.sass")]
+        blueprintSassFiles.each { assertTrue("${it.name} was not created", it.exists())}
+    }
 
-        blueprintFiles*.delete()
+    public void test_install_blueprint_framework_output_param_unnecessary() {
+        def config = [
+                grass:
+                [
+                        sass_dir: 'src/stylesheets',
+                        css_dir: 'src/web-app/css',
+                        images_dir: 'src/web-app/images',
+                        relative_assets: true,
+                ]
+        ]
+
+        compass = new CompassInvoker(config, new JavaProcessKiller())
+
+        blueprintScssFiles*.delete()
         compass.installBlueprint()
-
-        blueprintFiles.each { assertTrue("${it.name} was not created", it.exists())}
+        blueprintScssFiles.each { assertTrue("${it.name} was not created", it.exists())}
     }
 }
