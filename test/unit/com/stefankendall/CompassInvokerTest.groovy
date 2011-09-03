@@ -52,4 +52,13 @@ class CompassInvokerTest extends GroovyTestCase {
 
         assertEquals("Watch command is leaking processes", javaProcessCount, newJavaProcessCount)
     }
+
+    public void test_install_blueprint() {
+        def blueprintFiles = [new File("src/stylesheets/ie.scss"), new File("src/stylesheets/print.scss"), new File("src/stylesheets/screen.scss"), new File("src/stylesheets/partials/_base.scss")]
+        blueprintFiles*.delete()
+
+        compass.installBlueprint()
+
+        blueprintFiles.each { File file -> assertTrue("$file.name was not created", file.exists()) }
+    }
 }

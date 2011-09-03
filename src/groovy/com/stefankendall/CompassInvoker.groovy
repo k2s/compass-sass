@@ -9,7 +9,7 @@ class CompassInvoker {
         this.javaProcessKiller = javaProcessKiller
     }
 
-    public CompassInvoker(Map config, def javaProcessKiller ) {
+    public CompassInvoker(Map config, def javaProcessKiller) {
         this.config = config
         this.javaProcessKiller = javaProcessKiller
     }
@@ -53,6 +53,10 @@ class CompassInvoker {
                 '--output-style', config.grass.output_style])
     }
 
+    public void installBlueprint() {
+        runCompassCommand(['create', '--using', 'blueprint', '--sass-dir', config.grass.sass_dir, '--css-dir', config.grass.css_dir, '--javascripts-dir', 'js', '--images-dir', config.grass.images_dir]).waitFor()
+    }
+
     protected Process runCompassCommand(def compassArgs, PrintStream output = System.out) {
         String[] command = ['jruby', '-S', 'compass', compassArgs].flatten()
         println "Executing: ${command.join(' ')}"
@@ -71,6 +75,7 @@ class CompassInvoker {
     }
 
     private static boolean shutdownHookAdded = false
+
     protected def runCompassCommandInThread(def compassArgs) {
         if (!shutdownHookAdded) {
             addShutdownHookToKillCompass()

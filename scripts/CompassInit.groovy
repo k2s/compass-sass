@@ -1,5 +1,6 @@
 includeTargets << grailsScript("Init")
 includeTargets << new File("${compassScssIntegrationPluginDir}/scripts/_CompassFrameworks.groovy")
+includeTargets << new File("${compassScssIntegrationPluginDir}/scripts/_GetCompassInvoker.groovy")
 
 void displayCompassFrameworks() {
     println "\nAvailable Compass frameworks:"
@@ -28,9 +29,14 @@ target(initCompassFramework: 'Initialize compass framework') {
         def config = new ConfigSlurper().parse(new File(basedir, "grails-app/conf/GrassConfig.groovy").toURL())
         def sassOutputDir = config.grass.sass_dir
 
-        println "\nCopying sass stylesheets to ${sassOutputDir}"
-        Ant.copy(todir: "${basedir}/${sassOutputDir}", overwrite: true) {
-            fileset(dir: "${compassScssIntegrationPluginDir}/src/stylesheets/${framework.dir}")
+        if (framework == 'blueprint') {
+            compass.installBlueprint()
+        }
+        else {
+            println "\nCopying sass stylesheets to ${sassOutputDir}"
+            Ant.copy(todir: "${basedir}/${sassOutputDir}", overwrite: true) {
+                fileset(dir: "${compassScssIntegrationPluginDir}/src/stylesheets/${framework.dir}")
+            }
         }
 
         println """
