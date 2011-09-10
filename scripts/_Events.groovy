@@ -1,4 +1,4 @@
-includeTargets << new File("${compassScssIntegrationPluginDir}/scripts/_GetCompassInvoker.groovy")
+includeTargets << new File("${compassSassPluginDir}/scripts/_GetCompassInvoker.groovy")
 
 eventConfigureTomcat = {
     compass.watch()

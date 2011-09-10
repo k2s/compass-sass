@@ -1,5 +1,5 @@
-class CompassScssIntegrationGrailsPlugin {
-    def version = "0.3.0"
+class CompassSassGrailsPlugin {
+    def version = "0.3.1"
     def grailsVersion = "1.3.7 > *"
     def dependsOn = [:]
     def pluginExcludes = [
@@ -7,12 +7,12 @@ class CompassScssIntegrationGrailsPlugin {
 
     def author = "Stefan Kendall"
     def authorEmail = "stefankendall@gmail.com"
-    def title = "Compass CSS Framework - SASS/SCSS Integration"
+    def title = "Compass Framework - SASS/SCSS support"
     def description = '''
-Compass, SASS and SCSS support for Grails
+<a href='http://compass-style.org/'>Compass</a>, SASS and SCSS support for Grails. Automatically compiles .scss/.sass during run-app, and adds other framework functionality.
 '''
 
-    def documentation = "http://grails.org/plugin/compass-scss-integration"
+    def documentation = "http://grails.org/plugin/compass-sass"
 
     def license = "APACHE"
     def developers = [

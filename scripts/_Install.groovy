@@ -34,7 +34,7 @@ def createGrassConfigFile() {
     println "Creating GrassConfig.groovy if not already present"
     Ant.copy(
             tofile: "${basedir}/grails-app/conf/GrassConfig.groovy", overwrite: false,
-            file: "${compassScssIntegrationPluginDir}/grails-app/conf/DefaultGrassConfig.groovy")
+            file: "${compassSassPluginDir}/grails-app/conf/DefaultGrassConfig.groovy")
 }
 
 createGrassConfigFile()
