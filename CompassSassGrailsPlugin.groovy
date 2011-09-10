@@ -17,7 +17,7 @@ Compass, SASS and SCSS support for Grails. Automatically compiles .scss/.sass du
     def license = "APACHE"
     def developers = [
     ]
-    def scm = [url: "https://github.com/stefankendall/compass-scss-integration"]
+    def scm = [url: "https://github.com/stefankendall/compass-sass"]
 
     def doWithSpring = {
     }
