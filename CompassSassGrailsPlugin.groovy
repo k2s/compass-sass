@@ -9,7 +9,7 @@ class CompassSassGrailsPlugin {
     def authorEmail = "stefankendall@gmail.com"
     def title = "Compass Framework - SASS/SCSS support"
     def description = '''
-[Compass|http://compass-style.org/], SASS and SCSS support for Grails. Automatically compiles .scss/.sass during run-app, and adds other framework functionality.
+Compass, SASS and SCSS support for Grails. Automatically compiles .scss/.sass during run-app, and adds other framework functionality.
 '''
 
     def documentation = "http://grails.org/plugin/compass-sass"
