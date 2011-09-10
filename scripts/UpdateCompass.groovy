@@ -8,7 +8,7 @@ def updateGem(String gem) {
     p.waitFor()
 }
 
-target(updateCompass: 'Install blueprint stylesheets') {
+target(updateCompass: 'Update compass and its required gems') {
     println "Updating Compass plugins"
     def listOfGemsToUpgrade = ['compass', 'rb-fsevent']
     listOfGemsToUpgrade.each {
