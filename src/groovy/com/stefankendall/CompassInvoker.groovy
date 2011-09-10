@@ -14,6 +14,33 @@ class CompassInvoker {
         this.javaProcessKiller = javaProcessKiller
     }
 
+    public void compileSingleFile(File input, File output) {
+        output.parentFile.mkdirs()
+
+        def shells = [['sh', '-c'], ['cmd', '/c']]
+        def changeDirCommand = "cd ${input.parent}"
+        def compassCompileCommand =
+        "jruby -S compass compile ${input.name} --sass-dir . --css-dir ${output.parentFile.absolutePath} --output-style compressed"
+
+        for (def shell in shells) {
+            attemptExecutionInShell(shell, changeDirCommand, compassCompileCommand)
+        }
+    }
+
+    private boolean attemptExecutionInShell(def shell, String changeDirCommand, String compassCompileCommand) {
+        try {
+            shell << (changeDirCommand + " && " + compassCompileCommand)
+            def p = shell.execute()
+            p.consumeProcessOutput(System.out, new PrintStream(new ByteArrayOutputStream()))
+            p.waitFor()
+        }
+        catch (Exception e) {
+            return false
+        }
+
+        return true
+    }
+
     public void compile(callback) {
         def sass_dir = config.grass?.sass_dir
         def css_dir = config.grass?.css_dir
@@ -67,7 +94,7 @@ class CompassInvoker {
 
     protected Process runCompassCommand(def compassArgs, PrintStream output = System.out) {
         String[] command = ['jruby', '-S', 'compass', compassArgs].flatten()
-        println "Executing: ${command.join(' ')}"
+        output.append("Executing: ${command.join(' ')}\n")
 
         Process p = null
         try {

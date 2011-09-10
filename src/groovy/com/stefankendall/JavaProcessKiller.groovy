@@ -34,10 +34,8 @@ class JavaProcessKiller {
         killCommands.each { command ->
             if (!processKilledSuccessfully) {
                 try {
-                    def output = new ByteArrayOutputStream()
-                    def error = new ByteArrayOutputStream()
                     def process = command.execute()
-                    process.consumeProcessOutput(new PrintStream(output), new PrintStream(error))
+                    process.consumeProcessOutput()
                     process.waitFor()
                     processKilledSuccessfully = true
                 }

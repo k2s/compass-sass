@@ -37,6 +37,18 @@ class CompassInvokerTest extends GroovyTestCase {
         assertFalse("One of ${blueprintCssFiles} not created", someFileNotCreated)
     }
 
+    public void test_compile_single_file() {
+        File input = new File('web-app/sass/test.scss')
+        assertTrue( "Test setup is bad", input.exists() )
+
+        File output = new File('web-app/sass/out/test.css')
+        output.delete()
+
+        compass.compileSingleFile(input, output)
+
+        assertTrue(output.exists())
+    }
+
     public void test_compass_gem_is_installed() {
         def output = new ByteArrayOutputStream()
 

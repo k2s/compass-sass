@@ -1,8 +1,12 @@
 class CompassSassGrailsPlugin {
-    def version = "0.3.1"
+    def version = "0.4"
     def grailsVersion = "1.3.7 > *"
-    def dependsOn = [:]
+    def dependsOn = [resources: '1.0 > *']
     def pluginExcludes = [
+            'grails-app/views/*.gsp',
+            'web-app/**/*',
+            '**/MyAppResources.groovy',
+            'src/stylesheets/*'
     ]
 
     def author = "Stefan Kendall"
@@ -18,19 +22,4 @@ Compass, SASS and SCSS support for Grails. Automatically compiles .scss/.sass du
     def developers = [
     ]
     def scm = [url: "https://github.com/stefankendall/compass-sass"]
-
-    def doWithSpring = {
-    }
-
-    def doWithApplicationContext = { applicationContext ->
-    }
-
-    def doWithWebDescriptor = { xml ->
-    }
-
-    def doWithDynamicMethods = { ctx ->
-    }
-
-    def onChange = { event ->
-    }
 }
