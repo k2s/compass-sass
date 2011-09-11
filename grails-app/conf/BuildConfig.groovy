@@ -23,10 +23,9 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
     }
-    dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-
-        // runtime 'mysql:mysql-connector-java:5.1.13'
-//        runtime 'org.jruby:jruby:1.6.2'
+    plugins {
+        runtime("org.grails.plugins:resources:1.0.2") {
+            exported = false
+        }
     }
 }
