@@ -14,6 +14,16 @@ After installing, you're done. During grails run-app, compass is started to watc
 * **grails install-blueprint** - Installs blueprint from from the compass gem.
 * **grails update-compass** - Updates compass and any of its dependent gems.
 
+##Resources integration##
+You can also use the <a href='http://grails.org/plugin/resources'>resources plugin</a> with the following stanza:
+<pre><code>
+    mymodule {
+        resource url: '/sass/test.scss', attrs: [type: 'css'], disposition: 'head'
+    }
+</code></pre>
+
+**Note:** attrs: [type: 'css'] is required for the resources plugin to pick-up the files. Files must end in .sass or .scss to get picked up by the SASS resource mapper.
+
 ##Configuration##
 ###GrassConfig.groovy###
 <pre><code>grass {
