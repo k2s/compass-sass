@@ -23,9 +23,16 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
     }
+    dependencies {
+        test "org.codehaus.geb:geb-spock:0.6.0"
+        test("org.seleniumhq.selenium:selenium-firefox-driver:2.5.0") {
+            exclude 'selenium-server'
+            export = false
+        }
+    }
     plugins {
         runtime("org.grails.plugins:resources:1.0.2") {
-            exported = false
+            export = false
         }
     }
 }
