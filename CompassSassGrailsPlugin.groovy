@@ -5,8 +5,9 @@ class CompassSassGrailsPlugin {
     def pluginExcludes = [
             'grails-app/views/*.gsp',
             'web-app/**/*',
+            'src/web-app/**/*',
             '**/MyAppResources.groovy',
-            'src/stylesheets/*'
+            'src/stylesheets/**/*'
     ]
 
     def author = "Stefan Kendall"
