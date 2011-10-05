@@ -29,25 +29,26 @@ You can also use the <a href='http://grails.org/plugin/resources'>resources plug
 <pre><code>grass {
 	sass_dir = "./src/stylesheets"
 	css_dir = "./web-app/css"
-	images_dir = "./web-app/images"	
-	// default is true
-	relative_assets = true
-	// other options: nested, expanded, compact, compressed
+	relative_assets = true	
 	output_style = "compact"
-	// scss or sass 
 	framework_output_type = "scss"	
+	
+	images_dir = "./web-app/images"	
 }</code></pre>
 
 
 * **sass_dir**: Directory compass uses for *compile-css* and real-time recompilation during run-app.
 * **css_dir**: Output directory for compiled CSS.
-* **images_dir**: Location for images referenced in CSS.
-* **relative_assets**: Whether or not compass will generate relative URLs.
-* **output_style**: The output format of the CSS. If you work on a team of more than one developer, you'll want to use "compressed" if you check in your compiled CSS. Any other option adds the file-system location of the SASS/SCSS file that generated the CSS.
-* **framework\_output\_type**: The output of install-blueprint, either SASS or SCSS.
+* **relative_assets**: Whether or not compass will generate relative URLs.  
+`Values: true, false`
+* **output_style**: The output format of the CSS.   
+`Values: nested, expanded, compact, compressed`
+* **framework\_output\_type**: The output of install-blueprint.   
+`Values: sass, scss`
+* **images_dir**: *(Optional)* Location for images referenced in CSS.
 
 ##What if my team members/I don't have jRuby installed?##
-If jRuby is not installed, you will receive a warning during run-app, and SASS/SCSS will not be compiled. As long as you check in compiled CSS, therefore, team members not touching front-end code wouldn't need to have jRuby installed.
+If jRuby is not installed, you will receive a warning during run-app, and SASS/SCSS files will not be compiled. As long as you check in compiled CSS, this isn't an issue for multiple-developer teams. If you want to use the resources plugin, everyone will need jRuby installed.
 
 ##License##
 Licensed under the Apache License, Version 2.0. See <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>

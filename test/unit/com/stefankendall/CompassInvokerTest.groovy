@@ -10,6 +10,12 @@ class CompassInvokerTest extends GroovyTestCase {
         compass = new CompassInvoker(new File("grails-app/conf/DefaultGrassConfig.groovy"), new JavaProcessKiller())
     }
 
+    def blueprintCssFiles = [
+            new File('src/web-app/css/ie.css'),
+            new File('src/web-app/css/print.css'),
+            new File('src/web-app/css/screen.css')
+    ]
+
     public void test_compile() {
         def config = [
                 grass:
@@ -22,13 +28,25 @@ class CompassInvokerTest extends GroovyTestCase {
         ]
         compass = new CompassInvoker(config, new JavaProcessKiller())
         compass.installBlueprint()
+        blueprintCssFiles*.delete()
 
-        def blueprintCssFiles = [
-                new File('src/web-app/css/ie.css'),
-                new File('src/web-app/css/print.css'),
-                new File('src/web-app/css/screen.css')
+        compass.compile() {}
+
+        boolean someFileNotCreated = blueprintCssFiles.any { !it.exists() }
+        assertFalse("One of ${blueprintCssFiles} not created", someFileNotCreated)
+    }
+
+    public void test_compile_no_images_dir() {
+        def config = [
+                grass:
+                [
+                        sass_dir: 'src/stylesheets',
+                        css_dir: 'src/web-app/css',
+                        relative_assets: true
+                ]
         ]
-
+        compass = new CompassInvoker(config, new JavaProcessKiller())
+        compass.installBlueprint()
         blueprintCssFiles*.delete()
 
         compass.compile() {}
@@ -39,7 +57,7 @@ class CompassInvokerTest extends GroovyTestCase {
 
     public void test_compile_single_file() {
         File input = new File('web-app/sass/test.scss')
-        assertTrue( "Test setup is bad", input.exists() )
+        assertTrue("Test setup is bad", input.exists())
 
         File output = new File('web-app/sass/out/test.css')
         output.delete()

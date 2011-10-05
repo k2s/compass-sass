@@ -50,34 +50,26 @@ class CompassInvoker {
 
         ensureParameterSet sass_dir, "sass_dir is not set (GrassConfig.groovy)", callback
         ensureParameterSet css_dir, "css_dir is not set (GrassConfig.groovy)", callback
-        ensureParameterSet images_dir, "images_dir is not set (GrassConfig.groovy)", callback
         ensureParameterSet output_style, "output_style is not set (GrassConfig.groovy)", callback
-
-        println """
-            sass_dir = '${sass_dir}'
-            css_dir = '${css_dir}'
-            images_dir = '${images_dir}'
-            relative_assets = ${relative_assets}
-            output_style = ${output_style}
-        """
 
         println "Compiling sass stylesheets..."
 
         def sassCompileCommandLineArgs = ['compile',
                 '--sass-dir', "${sass_dir}",
                 '--css-dir', "${css_dir}",
-                '--images-dir', "${images_dir}",
+                images_dir ? ['--images-dir', "${images_dir}"] : [],
                 relative_assets ? "--relative-assets" : "",
-                '--output-style', "${output_style}"]
+                '--output-style', "${output_style}"].flatten()
 
         def p = runCompassCommand(sassCompileCommandLineArgs)
         p?.waitFor()
     }
 
     public void watch() {
+        def images_dir = config.grass?.images_dir
         runCompassCommandInThread(['watch', '--sass-dir', config.grass.sass_dir,
-                '--css-dir', config.grass.css_dir, '--images-dir', config.grass.images_dir,
-                '--output-style', config.grass.output_style])
+                '--css-dir', config.grass.css_dir, ['--images-dir', images_dir],
+                '--output-style', config.grass.output_style].flatten())
     }
 
     public void installBlueprint() {
@@ -87,7 +79,8 @@ class CompassInvoker {
             installBlueprintCommand << ['--syntax', 'sass']
         }
 
-        installBlueprintCommand << ['--sass-dir', config.grass.sass_dir, '--css-dir', config.grass.css_dir, '--javascripts-dir', 'js', '--images-dir', config.grass.images_dir]
+        def images_dir = config.grass?.images_dir
+        installBlueprintCommand << ['--sass-dir', config.grass.sass_dir, '--css-dir', config.grass.css_dir, '--javascripts-dir', 'js', images_dir ? ['--images-dir', images_dir] : []]
 
         runCompassCommand(installBlueprintCommand.flatten()).waitFor()
     }
