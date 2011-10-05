@@ -68,7 +68,7 @@ class CompassInvoker {
     public void watch() {
         def images_dir = config.grass?.images_dir
         runCompassCommandInThread(['watch', '--sass-dir', config.grass.sass_dir,
-                '--css-dir', config.grass.css_dir, ['--images-dir', images_dir],
+                '--css-dir', config.grass.css_dir, (images_dir ? ['--images-dir', images_dir] : []),
                 '--output-style', config.grass.output_style].flatten())
     }
 
@@ -80,7 +80,7 @@ class CompassInvoker {
         }
 
         def images_dir = config.grass?.images_dir
-        installBlueprintCommand << ['--sass-dir', config.grass.sass_dir, '--css-dir', config.grass.css_dir, '--javascripts-dir', 'js', images_dir ? ['--images-dir', images_dir] : []]
+        installBlueprintCommand << ['--sass-dir', config.grass.sass_dir, '--css-dir', config.grass.css_dir, '--javascripts-dir', 'js', (images_dir ? ['--images-dir', images_dir] : [])]
 
         runCompassCommand(installBlueprintCommand.flatten()).waitFor()
     }
