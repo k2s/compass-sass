@@ -9,7 +9,13 @@ class SassResourceMapper {
     static defaultExcludes = ['**/*.js', '**/*.png', '**/*.gif', '**/*.jpg', '**/*.jpeg', '**/*.gz', '**/*.zip']
     static defaultIncludes = ['**/*.scss', '**/*.sass']
 
-    static String SASS_FILE_EXTENSIONS = ['.scss', '.sass']
+    private static String SASS_FILE_EXTENSIONS = ['.scss', '.sass']
+
+    private CompassInvoker compassInvoker
+
+    public SassResourceMapper() {
+        compassInvoker = new CompassInvoker(getConfigFile(), new JavaProcessKiller())
+    }
 
     def map(resource, config) {
         File originalFile = resource.processedFile
@@ -17,7 +23,7 @@ class SassResourceMapper {
         if (resource.sourceUrl && isFileSassFile(originalFile)) {
             File input = getOriginalFileSystemFile(resource.sourceUrl);
             File output = new File(generateCompiledFileFromOriginal(originalFile.absolutePath))
-            new CompassInvoker(getConfigFile(), new JavaProcessKiller()).compileSingleFile(input, output)
+            compassInvoker.compileSingleFile(input, output)
 
             resource.processedFile = output
 

@@ -5,11 +5,10 @@ class CompassInvoker {
     def javaProcessKiller
 
     public CompassInvoker(File grassConfigLocation, def javaProcessKiller) {
-        config = new ConfigSlurper().parse(grassConfigLocation.toURL())
-        this.javaProcessKiller = javaProcessKiller
+        this(new ConfigSlurper().parse(grassConfigLocation.toURL()), javaProcessKiller)
     }
 
-    public CompassInvoker(Map config, def javaProcessKiller) {
+    public CompassInvoker(def config, def javaProcessKiller) {
         this.config = config
         this.javaProcessKiller = javaProcessKiller
     }
@@ -128,7 +127,6 @@ class CompassInvoker {
     }
 
     protected def killCompass() {
-        println "Attempting to kill compass threaded processes"
         javaProcessKiller.killAll('org/jruby/Main -S compass')
     }
 }
