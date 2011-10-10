@@ -6,6 +6,6 @@ Class javaProcessKillerClass = loader.parseClass(
 
 def configFile = new File("$basedir/grails-app/conf/GrassConfig.groovy")
 if (!configFile.exists()) {
-    configFile = new File("$basedir/grails-app/conf/DefaultGrassConfig.groovy")
+    configFile = new File("$compassSassPluginDir/grails-app/conf/DefaultGrassConfig.groovy")
 }
 compass = compassInvokerClass.newInstance(configFile, javaProcessKillerClass.newInstance())
