@@ -1,12 +1,6 @@
-def getOutputFromCommand(String command) {
-    def process = command.execute()
-    def out = new StringBuffer()
-    def err = new StringBuffer()
-    process.consumeProcessOutput(out, err)
-    process.waitFor()
-
-    return out.toString()
-}
+includeTargets << new File("${compassSassPluginDir}/scripts/_CompassGems.groovy")
+includeTargets << new File("${compassSassPluginDir}/scripts/_GetCompassInvoker.groovy")
+includeTargets << new File("${compassSassPluginDir}/scripts/_GemCommands.groovy")
 
 def isJRubyInstalled() {
     try {
@@ -17,17 +11,6 @@ def isJRubyInstalled() {
     }
 
     return true
-}
-
-def isGemInstalled(String gem) {
-    String gems = getOutputFromCommand("jruby -S gem list")
-    return gems.contains("compass")
-}
-
-def installGem(String gem) {
-    Process p = "jruby -S gem install $gem".execute()
-    p.consumeProcessOutput(System.out, System.err)
-    p.waitFor()
 }
 
 def createGrassConfigFile() {
@@ -47,8 +30,7 @@ if (!isJRubyInstalled()) {
     return
 }
 
-def listOfGemsToInstall = ['compass', 'rb-fsevent']
-listOfGemsToInstall.each { gem ->
+compassGems.each { gem ->
     println "Testing to see if ${gem} gem is installed..."
     if (!isGemInstalled(gem)) {
         println "${gem} gem not found; attempting to install automatically..."

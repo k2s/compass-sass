@@ -1,17 +1,18 @@
 includeTargets << grailsScript("Init")
+includeTargets << new File("${compassSassPluginDir}/scripts/_CompassGems.groovy")
 includeTargets << new File("${compassSassPluginDir}/scripts/_GetCompassInvoker.groovy")
-
-def updateGem(String gem) {
-    println "Updating gem: $gem"
-    Process p = "jruby -S gem update $gem".execute()
-    p.consumeProcessOutput(System.out, System.err)
-    p.waitFor()
-}
+includeTargets << new File("${compassSassPluginDir}/scripts/_GemCommands.groovy")
 
 target(updateCompass: 'Update compass and its required gems') {
+    println "Ensuring Compass installed"
+    compassGems.each {
+        if (!isGemInstalled(it)) {
+            installGem(it)
+        }
+    }
+
     println "Updating Compass plugins"
-    def listOfGemsToUpgrade = ['compass', 'rb-fsevent']
-    listOfGemsToUpgrade.each {
+    compassGems.each {
         updateGem(it)
     }
 }

@@ -1,0 +1,1 @@
+compassGems = ['compass']
