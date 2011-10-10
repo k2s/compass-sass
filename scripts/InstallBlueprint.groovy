@@ -2,9 +2,17 @@ includeTargets << grailsScript("Init")
 includeTargets << new File("${compassSassPluginDir}/scripts/_GetCompassInvoker.groovy")
 
 target(installBlueprint: 'Install blueprint stylesheets') {
-    compass.installBlueprint()
+    boolean compassInstallationSuccessful = true
+    try {
+        compass.installBlueprint()
+    }
+    catch (Exception e) {
+        println e.message
+        compassInstallationSuccessful = false
+    }
 
-    println '''
+    if (compassInstallationSuccessful) {
+        println '''
 Blueprint has been installed!
 
 SASS/SCSS stylesheets are recompiled automatically when running 'grails run-app'.
@@ -20,6 +28,10 @@ To import your new stylesheets add the following lines of HTML (or equivalent) t
   <![endif]-->
 </head>
 '''
+    }
+    else {
+        System.err.println('ERROR: Blueprint could not be installed.')
+    }
 }
 
 setDefaultTarget(installBlueprint)

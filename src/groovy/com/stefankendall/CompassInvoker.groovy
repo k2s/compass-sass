@@ -81,17 +81,24 @@ class CompassInvoker {
         def images_dir = config.grass?.images_dir
         installBlueprintCommand << ['--sass-dir', config.grass.sass_dir, '--css-dir', config.grass.css_dir, '--javascripts-dir', 'js', (images_dir ? ['--images-dir', images_dir] : [])]
 
-        runCompassCommand(installBlueprintCommand.flatten()).waitFor()
+        def output = new ByteArrayOutputStream()
+        runCompassCommand(installBlueprintCommand.flatten(), System.out, new PrintStream(output)).waitFor()
+        String errorOutput = output.toString()
+
+        def errorTexts = ['compass (LoadError)', 'Could not find RubyGem compass']
+        if (errorTexts.any { errorOutput.contains(it)}) {
+            throw new Exception("Compass could not be loaded.")
+        }
     }
 
-    protected Process runCompassCommand(def compassArgs, PrintStream output = System.out) {
+    protected Process runCompassCommand(def compassArgs, PrintStream output = System.out, PrintStream error = System.err) {
         String[] command = ['jruby', '-S', 'compass', compassArgs].flatten()
         output.append("Executing: ${command.join(' ')}\n")
 
         Process p = null
         try {
             p = command.execute()
-            p.consumeProcessOutput(output, System.err)
+            p.consumeProcessOutput(output, error)
         }
         catch (IOException e) {
             System.err.println("JRuby could not be started. Make sure 'jruby' exists on the PATH and try again.")
