@@ -5,28 +5,29 @@ class CompassInvokerTest extends GroovyTestCase {
 
     def blueprintScssFiles = [new File("src/stylesheets/ie.scss"), new File("src/stylesheets/print.scss"), new File("src/stylesheets/screen.scss"), new File("src/stylesheets/partials/_base.scss")]
     def blueprintSassFiles = [new File("src/stylesheets/ie.sass"), new File("src/stylesheets/print.sass"), new File("src/stylesheets/screen.sass"), new File("src/stylesheets/partials/_base.sass")]
-
-    public void setUp() {
-        compass = new CompassInvoker(new File("grails-app/conf/DefaultGrassConfig.groovy"), new JavaProcessKiller())
-    }
-
     def blueprintCssFiles = [
             new File('src/web-app/css/ie.css'),
             new File('src/web-app/css/print.css'),
             new File('src/web-app/css/screen.css')
     ]
 
+    def validConfig = [
+            grass:
+            [
+                    sass_dir: 'src/stylesheets',
+                    css_dir: 'src/web-app/css',
+                    images_dir: 'src/web-app/images',
+                    relative_assets: true,
+                    framework_output_type: 'sass'
+            ]
+    ]
+
+    public void setUp() {
+        compass = new CompassInvoker(new File("grails-app/conf/DefaultGrassConfig.groovy"), new JavaProcessKiller())
+    }
+
     public void test_compile() {
-        def config = [
-                grass:
-                [
-                        sass_dir: 'src/stylesheets',
-                        css_dir: 'src/web-app/css',
-                        images_dir: 'src/web-app/images',
-                        relative_assets: true
-                ]
-        ]
-        compass = new CompassInvoker(config, new JavaProcessKiller())
+        compass = new CompassInvoker(validConfig, new JavaProcessKiller())
         compass.installBlueprint()
         blueprintCssFiles*.delete()
 
@@ -74,7 +75,7 @@ class CompassInvokerTest extends GroovyTestCase {
         p.waitFor()
 
         String processOutput = output.toString()
-        assertTrue("Compass gem does not seem to be runnable: $processOutput", processOutput.contains("0.11"))
+        assertTrue("Compass gem does not seem to be runnable: $processOutput", (processOutput =~ /Compass \d\.\d\d/).find())
     }
 
     public void test_killing_compass_doesnt_leak_processes() {
@@ -84,7 +85,7 @@ class CompassInvokerTest extends GroovyTestCase {
         compass.killCompass()
         int newJavaProcessCount = javaProcessKiller.getRunningJavaProcesses().size()
 
-        assertEquals("Watch command is leaking processes", javaProcessCount, newJavaProcessCount)
+        assertTrue("Watch command is leaking processes", newJavaProcessCount <= javaProcessCount)
     }
 
     public void test_install_blueprint() {
@@ -96,19 +97,7 @@ class CompassInvokerTest extends GroovyTestCase {
     }
 
     public void test_install_blueprint_sass_output() {
-        def config = [
-                grass:
-                [
-                        sass_dir: 'src/stylesheets',
-                        css_dir: 'src/web-app/css',
-                        images_dir: 'src/web-app/images',
-                        relative_assets: true,
-                        framework_output_type: 'sass'
-                ]
-        ]
-
-        compass = new CompassInvoker(config, new JavaProcessKiller())
-
+        compass = new CompassInvoker(validConfig, new JavaProcessKiller())
 
         blueprintSassFiles*.delete()
         compass.installBlueprint()
