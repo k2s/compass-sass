@@ -1,4 +1,4 @@
-package com.stefankendall
+package grails.plugins.sass
 
 class CompassInvoker {
     def config

@@ -1,4 +1,4 @@
-package com.stefankendall
+package grails.plugins.sass
 
 class JavaProcessKiller {
     public void killAll(String processPattern) {

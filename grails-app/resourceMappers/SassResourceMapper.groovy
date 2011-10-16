@@ -1,8 +1,7 @@
-import com.stefankendall.CompassInvoker
-import com.stefankendall.JavaProcessKiller
-import org.grails.plugin.resource.mapper.MapperPhase
 import grails.util.GrailsUtil
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import org.grails.plugin.resource.mapper.MapperPhase
+import grails.plugins.sass.JavaProcessKiller
+import grails.plugins.sass.CompassInvoker
 
 class SassResourceMapper {
     def grailsApplication
