@@ -1,9 +1,11 @@
 import com.stefankendall.CompassInvoker
 import com.stefankendall.JavaProcessKiller
-import org.codehaus.groovy.grails.commons.GrailsResourceUtils
 import org.grails.plugin.resource.mapper.MapperPhase
+import grails.util.GrailsUtil
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class SassResourceMapper {
+    def grailsApplication
     def phase = MapperPhase.GENERATION
 
     static defaultExcludes = ['**/*.js', '**/*.png', '**/*.gif', '**/*.jpg', '**/*.jpeg', '**/*.gz', '**/*.zip']
@@ -14,7 +16,7 @@ class SassResourceMapper {
     private CompassInvoker compassInvoker
 
     public SassResourceMapper() {
-        compassInvoker = new CompassInvoker(getConfigFile(), new JavaProcessKiller())
+        compassInvoker = new CompassInvoker(getConfig(), new JavaProcessKiller())
     }
 
     def map(resource, config) {
@@ -34,10 +36,17 @@ class SassResourceMapper {
         }
     }
 
-    private File getConfigFile() {
-        def configFile = new File("grails-app/conf/GrassConfig.groovy")
-        def defaultConfigFile = new File("grails-app/conf/DefaultGrassConfig.groovy")
-        return configFile.exists() ? configFile : defaultConfigFile
+    private ConfigObject getConfig() {
+        def config = new ConfigObject()
+        def classLoader = new GroovyClassLoader(getClass().classLoader)
+        config.merge(new ConfigSlurper(GrailsUtil.environment).parse(classLoader.loadClass('DefaultGrassConfig')))
+        try {
+            new ConfigSlurper(GrailsUtil.environment).parse(classLoader.loadClass('GrassConfig'))
+        }
+        catch (Exception ignored) {
+        }
+
+        return config
     }
 
     private boolean isFileSassFile(File file) {
@@ -51,6 +60,6 @@ class SassResourceMapper {
     }
 
     private File getOriginalFileSystemFile(String sourcePath) {
-        new File(GrailsResourceUtils.WEB_APP_DIR + sourcePath);
+        grailsApplication.parentContext.getResource(sourcePath).file
     }
 }
