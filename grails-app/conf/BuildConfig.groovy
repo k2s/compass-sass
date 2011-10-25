@@ -26,7 +26,9 @@ grails.project.dependency.resolution = {
     dependencies {
     }
     plugins {
-        runtime("org.grails.plugins:resources:1.0.2") {
+        build(":release:1.0.0.RC3") {
+            export = false
         }
+        runtime "org.grails.plugins:resources:1.1.1"
     }
 }
