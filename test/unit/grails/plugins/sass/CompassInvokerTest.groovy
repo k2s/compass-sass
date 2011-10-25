@@ -18,7 +18,9 @@ class CompassInvokerTest extends GroovyTestCase {
                     css_dir: 'src/web-app/css',
                     images_dir: 'src/web-app/images',
                     relative_assets: true,
-                    line_comments: true,
+
+                    output_style: 'expanded',
+                    line_comments: false,
                     framework_output_type: 'sass'
             ]
     ]
@@ -47,7 +49,7 @@ class CompassInvokerTest extends GroovyTestCase {
                         relative_assets: true
                 ]
         ]
-        compass = new CompassInvoker(config, new JavaProcessKiller())
+        def compass = new CompassInvoker(config, new JavaProcessKiller())
         compass.installBlueprint()
         blueprintCssFiles*.delete()
 
@@ -67,6 +69,33 @@ class CompassInvokerTest extends GroovyTestCase {
         compass.compileSingleFile(input, output)
 
         assertTrue(output.exists())
+    }
+
+    public void test_line_comments_compile_flag() {
+        def config = [
+                grass:
+                [
+                        sass_dir: 'src/stylesheets',
+                        css_dir: 'src/web-app/css',
+                        images_dir: 'src/web-app/images',
+                        relative_assets: true,
+
+                        output_style: 'expanded',
+                        line_comments: false,
+                        framework_output_type: 'sass'
+                ]
+        ]
+        def compassWithoutLineComments = new CompassInvoker(config, new JavaProcessKiller())
+        compassWithoutLineComments.forceRecompile = true
+        compassWithoutLineComments.compile() {}
+        File testCss = new File('src/web-app/css/test.css')
+        assertFalse("Test file is being generated with line comments", testCss.text.contains('/*'))
+
+        config.grass.line_comments = true
+        def compassWithLineComments = new CompassInvoker(config, new JavaProcessKiller())
+        compassWithLineComments.forceRecompile = true
+        compassWithLineComments.compile(){}
+        assertTrue("Test file is being generated without line comments", testCss.text.contains('/*'))
     }
 
     public void test_compass_gem_is_installed() {
