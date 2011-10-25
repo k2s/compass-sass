@@ -3,6 +3,7 @@ package grails.plugins.sass
 class CompassInvoker {
     def config
     def javaProcessKiller
+    boolean forceRecompile = false
 
     public CompassInvoker(File grassConfigLocation, def javaProcessKiller) {
         this(new ConfigSlurper().parse(grassConfigLocation.toURL()), javaProcessKiller)
@@ -54,13 +55,16 @@ class CompassInvoker {
 
         println "Compiling sass stylesheets..."
 
-        def sassCompileCommandLineArgs = ['compile',
+        def sassCompileCommandLineArgs = [
+                'compile',
                 '--sass-dir', "${sass_dir}",
                 '--css-dir', "${css_dir}",
                 images_dir ? ['--images-dir', "${images_dir}"] : [],
                 relative_assets ? "--relative-assets" : "",
+                '--output-style', "${output_style}",
                 line_comments ? "" : "--no-line-comments",
-                '--output-style', "${output_style}"].flatten()
+                forceRecompile ? "--force" : "",
+        ].flatten()
 
         def p = runCompassCommand(sassCompileCommandLineArgs)
         p?.waitFor()

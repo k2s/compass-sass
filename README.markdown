@@ -32,7 +32,8 @@ You can also use the <a href='http://grails.org/plugin/resources'>resources plug
 	relative_assets = true	
 	output_style = "compact"
 	framework_output_type = "scss"	
-	
+
+	line_comments = true
 	images_dir = "./web-app/images"	
 }</code></pre>
 
@@ -41,7 +42,7 @@ You can also use the <a href='http://grails.org/plugin/resources'>resources plug
 * **css_dir**: Output directory for compiled CSS.
 * **relative_assets**: Whether or not compass will generate relative URLs.  
 `Values: true, false`
-* **line_comments**: Whether or not compass will generate debugging comments that display the original location of your selectors. URLs.
+* **line_comments**: Whether or not compass will generate debugging comments that display the original location of your selectors.
 `Values: true, false`
 * **output_style**: The output format of the CSS.   
 `Values: nested, expanded, compact, compressed`
