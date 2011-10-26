@@ -30,7 +30,7 @@ class CompassInvokerTest extends GroovyTestCase {
     }
 
     public void test_compile() {
-        compass = new CompassInvoker(validConfig, new JavaProcessKiller())
+        def compass = new CompassInvoker(validConfig, new JavaProcessKiller())
         compass.installBlueprint()
         blueprintCssFiles*.delete()
 
@@ -94,7 +94,7 @@ class CompassInvokerTest extends GroovyTestCase {
         config.grass.line_comments = true
         def compassWithLineComments = new CompassInvoker(config, new JavaProcessKiller())
         compassWithLineComments.forceRecompile = true
-        compassWithLineComments.compile(){}
+        compassWithLineComments.compile() {}
         assertTrue("Test file is being generated without line comments", testCss.text.contains('/*'))
     }
 
@@ -118,7 +118,20 @@ class CompassInvokerTest extends GroovyTestCase {
         assertTrue("Watch command is leaking processes", newJavaProcessCount <= javaProcessCount)
     }
 
-    public void test_install_blueprint() {
+    public void test_install_blueprint_scss_output() {
+        def config = [
+                grass:
+                [
+                        sass_dir: 'src/stylesheets',
+                        css_dir: 'src/web-app/css',
+                        images_dir: 'src/web-app/images',
+                        relative_assets: true,
+
+                        output_style: 'compact',
+                        framework_output_type: 'scss'
+                ]
+        ]
+        def compass = new CompassInvoker(config, new JavaProcessKiller())
         blueprintScssFiles*.delete()
 
         compass.installBlueprint()
@@ -127,7 +140,7 @@ class CompassInvokerTest extends GroovyTestCase {
     }
 
     public void test_install_blueprint_sass_output() {
-        compass = new CompassInvoker(validConfig, new JavaProcessKiller())
+        def compass = new CompassInvoker(validConfig, new JavaProcessKiller())
 
         blueprintSassFiles*.delete()
         compass.installBlueprint()
@@ -146,7 +159,7 @@ class CompassInvokerTest extends GroovyTestCase {
                 ]
         ]
 
-        compass = new CompassInvoker(config, new JavaProcessKiller())
+        def compass = new CompassInvoker(config, new JavaProcessKiller())
 
         blueprintScssFiles*.delete()
         compass.installBlueprint()
