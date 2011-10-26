@@ -116,7 +116,7 @@ class CompassInvoker {
     }
 
     protected def killCompass() {
-        javaProcessKiller.killAll('org/jruby/Main -S compass')
+        javaProcessKiller.killAllRegex(~/.*org[\.\/]jruby[\.\/]Main\s+-[sS]\s+compass.*/)
     }
 
     protected def getCompileArgs(callback) {
