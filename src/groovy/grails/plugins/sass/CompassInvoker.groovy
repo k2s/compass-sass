@@ -20,7 +20,7 @@ class CompassInvoker {
         def shells = [['sh', '-c'], ['cmd', '/c']]
         def changeDirCommand = "cd ${input.parent}"
         
-        String[] shellArgs = ['jruby', '-S', 'compass', 'compile', input.name]
+        def shellArgs = ['jruby', '-S', 'compass', 'compile', input.name]
         shellArgs << '--sass-dir' << '.'
         shellArgs << '--css-dir' << output.parentFile.absolutePath
         shellArgs += getPreferenceArgs(null)
@@ -74,7 +74,7 @@ class CompassInvoker {
     }
 
     protected Process runCompassCommand(def compassArgs, PrintStream output = System.out, PrintStream error = System.err) {
-        String[] command = ['jruby', '-S', 'compass'] + compassArgs
+        String[] command = ['jruby', '-S', 'compass', compassArgs].flatten()
         output.append("Executing: ${command.join(' ')}\n")
 
         Process p = null
