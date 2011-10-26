@@ -78,11 +78,7 @@ class CompassInvoker {
     }
 
     public void installBlueprint() {
-        def installBlueprintCommand = ['create', '--using', 'blueprint']
-
-        if (config.grass?.framework_output_type == 'sass') {
-            installBlueprintCommand << ['--syntax', 'sass']
-        }
+        def installBlueprintCommand = ['create', '--using', 'blueprint', '--syntax', (config.grass?.framework_output_type ?: "scss")]
 
         def images_dir = config.grass?.images_dir
         installBlueprintCommand << ['--sass-dir', config.grass.sass_dir, '--css-dir', config.grass.css_dir, '--javascripts-dir', 'js', (images_dir ? ['--images-dir', images_dir] : [])]
