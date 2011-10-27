@@ -1,5 +1,5 @@
 class CompassSassGrailsPlugin {
-    def version = "0.5.4"
+    def version = "0.5.5"
     def grailsVersion = "1.3.7 > *"
     def dependsOn = [resources: '1.0.2 > *']
     def pluginExcludes = [
@@ -21,6 +21,7 @@ Compass, SASS and SCSS support for Grails. Automatically compiles .scss/.sass du
 
     def license = "APACHE"
     def developers = [
+            [name:'Joel Rosenberg']
     ]
     def scm = [url: "https://github.com/stefankendall/compass-sass"]
 }
