@@ -1,3 +1,6 @@
 stacktrace.log
 .sass-cache
 /target
+.idea
+*.iml
+out/
