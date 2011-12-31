@@ -6,6 +6,12 @@ Compass, SASS and SCSS support for Grails
 
 ##Pre-Requisites##
 To use this plugin, you will need to have jRuby installed and on the PATH. During installation, the plugin will check for the existence of Compass, and if the gem isn't installed, it will install it.
+If you have RVM installed, the gem path is incorrect unless rvm is set to use the "default" ruby. If you're having issues,
+try to manually install compass into RVM, and restart your terminal to make sure JRuby picks up the PATH change.
+<pre><code>
+rvm use --default (version)
+gem install compass
+</code></pre>
 
 ##Usage##
 After installing, you're done. During grails run-app, compass is started to watch the configured source directory (default src/stylesheets) for changes to SASS or SCSS files, which lets you compile and run on the fly. This is the only time compass is invoked automatically. The following commands are also available:
