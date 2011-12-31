@@ -19,7 +19,7 @@ class CompassInvoker {
 
         def shells = [['sh', '-c'], ['cmd', '/c']]
         def changeDirCommand = "cd ${input.parent}"
-        
+
         def shellArgs = ['jruby', '-S', 'compass', 'compile', input.name]
         shellArgs << '--sass-dir' << '.'
         shellArgs << '--css-dir' << output.parentFile.absolutePath
@@ -68,8 +68,10 @@ class CompassInvoker {
         String errorOutput = output.toString()
 
         def errorTexts = ['compass (LoadError)', 'Could not find RubyGem compass']
-        if (errorTexts.any { errorOutput.contains(it)}) {
-            throw new Exception("Compass could not be loaded.")
+        errorTexts.each {
+            if (errorOutput.contains(it)) {
+                throw new Exception("Compass could not be loaded: ${it}")
+            }
         }
     }
 
@@ -135,17 +137,17 @@ class CompassInvoker {
         def relative_assets = config.grass?.relative_assets == null ? true : config.grass?.relative_assets
         def line_comments = config.grass?.line_comments == null ? true : config.grass?.line_comments
         def output_style = config.grass?.output_style ?: 'compact'
-        
+
         ensureParameterSet output_style, "output_style is not set (GrassConfig.groovy)", callback
-        
+
         def args = []
-        
+
         args << '--output-style' << output_style
         if (images_dir) args << '--images-dir' << images_dir
         if (relative_assets) args << '--relative-assets'
-        if (! line_comments) args << '--no-line-comments'
+        if (!line_comments) args << '--no-line-comments'
         if (forceRecompile) args << '--force'
-        
+
         return args
     }
 }
