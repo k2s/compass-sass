@@ -1,0 +1,54 @@
+<plugin name='compass-sass' version='0.7' grailsVersion='2.2.0.RC2 &gt; *'>
+  <author>Stefan Kendall</author>
+  <authorEmail>stefankendall@gmail.com</authorEmail>
+  <title>Compass Framework - SASS/SCSS support</title>
+  <description>
+Compass, SASS and SCSS support for Grails. Automatically compiles .scss/.sass during run-app, and adds other framework functionality.
+</description>
+  <documentation>http://grails.org/plugin/compass-sass</documentation>
+  <type>CompassSassGrailsPlugin</type>
+  <resources>
+    <resource>DefaultGrassConfig</resource>
+    <resource>MyAppResources</resource>
+    <resource>SassResourceMapper</resource>
+  </resources>
+  <repositories>
+    <repository name='grailsCentral' url='http://grails.org/plugins' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+    <repository name='http://repository.jboss.org/nexus/content/groups/public/' url='http://repository.jboss.org/nexus/content/groups/public/' />
+    <repository name='http://repository.codehaus.org' url='http://repository.codehaus.org/' />
+    <repository name='http://maven.springframework.org/milestone/' url='http://maven.springframework.org/milestone/' />
+  </repositories>
+  <dependencies>
+    <runtime>
+      <dependency group='org.drools' name='drools-compiler' version='5.5.0.CR1' />
+      <dependency group='org.drools' name='drools-core' version='5.5.0.CR1' />
+      <dependency group='org.drools' name='drools-core' version='5.5.0.CR1' />
+      <dependency group='com.sun.xml.bind' name='jaxb-xjc' version='2.2.5' />
+      <dependency group='org.drools' name='knowledge-api' version='5.5.0.CR1' />
+    </runtime>
+  </dependencies>
+  <plugins>
+    <compile>
+      <plugin group='org.grails.plugins' name='console' version='1.2' />
+      <plugin group='org.grails.plugins' name='searchable' version='0.6.4' />
+      <plugin group='org.grails.plugins' name='cloud-foundry' version='1.2.3' />
+      <plugin group='org.grails.plugins' name='quartz' version='1.0-RC2' />
+      <plugin group='org.grails.plugins' name='cache' version='1.0.1' />
+      <plugin group='org.grails.plugins' name='famfamfam' version='1.0.1' />
+      <plugin group='org.grails.plugins' name='markdown' version='1.0.0.RC1' />
+    </compile>
+    <runtime>
+      <plugin group='org.grails.plugins' name='hibernate' version='2.2.0.RC2' />
+      <plugin group='org.grails.plugins' name='cors' version='1.0.3' />
+      <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
+      <plugin group='org.grails.plugins' name='jquery' version='1.8.2' />
+      <plugin group='org.grails.plugins' name='database-migration' version='1.2' />
+    </runtime>
+    <build>
+      <plugin group='org.grails.plugins' name='tomcat' version='2.2.0.RC2' />
+    </build>
+  </plugins>
+  <runtimePluginRequirements />
+  <behavior />
+</plugin>
